@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 
-export default class AddRecipe extends Component {
+export default class EditRecipe extends Component {
     constructor(props) {
         super(props);
 
@@ -16,16 +16,31 @@ export default class AddRecipe extends Component {
         this.onDeleteRow = this.onDeleteRow.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
+
         this.state = {
             name: '',
             time: '',
             description: '',
             preparing: '',
-            ingredients: [['', '']],
+            ingredients: [],
             index: 0,
             ingredientsTable: []
         }
+
+        axios.get(`http://localhost:5000/recipes/${this.props.match.params.id}`)
+            .then(res => {
+                this.setState({
+                    name: res.data.name,
+                    time: res.data.time,
+                    description: res.data.description,
+                    preparing: res.data.preparing,
+                    ingredients: res.data.ingredients,
+                });
+            })
+            .then(() => { this.state.ingredients.forEach(() => { this.onAddRow() }) })
     }
+
+
 
     onChangeName(e) {
         this.setState({
@@ -78,13 +93,16 @@ export default class AddRecipe extends Component {
     }
 
     onAddRow() {
-        let array = this.state.ingredients.slice();
-        array.push(['', '']);
-        this.setState({
-            ingredients: array,
-            index: this.state.index + 1
-        });
-        this.state.ingredientsTable.push(<tr key={this.state.index.toString()}>
+        let length = this.state.ingredients.length;
+        if (length == this.state.index + 1) {
+            let array = this.state.ingredients.slice();
+            array.push(['', '']);
+            this.setState({
+                ingredients: array,
+            });
+        }
+        let table = this.state.ingredientsTable.slice();
+        table.push(<tr key={this.state.index.toString()}>
             <td>
                 <input
                     type="text"
@@ -93,7 +111,6 @@ export default class AddRecipe extends Component {
                     placeholder="Amount"
                     maxLength="10"
                     defaultValue={this.state.ingredients[this.state.index][0]}
-
                     onChange={this.onChangeAmount}
                 />
             </td>
@@ -113,6 +130,10 @@ export default class AddRecipe extends Component {
                     onClick={this.onDeleteRow}>x</button>
             </td>
         </tr>);
+        this.setState({
+            ingredientsTable: table,
+            index: this.state.index + 1
+        })
     }
 
     onSubmit(e) {
@@ -126,15 +147,13 @@ export default class AddRecipe extends Component {
             ingredients: array,
         }
 
-        console.log(recipe);
+        axios.post(`http://localhost:5000/update/${this.props.match.params.id}`, recipe);
 
-        axios.post('http://localhost:5000/add', recipe)
-            .then(res => console.log(res.data));
-
-        window.location = '/';
+        window.location = `/recipe/${this.props.match.params.id}`;
     }
 
     render() {
+
         return (
             <div className="container mt-5 pt-5 text-secondary">
                 <div className="row">

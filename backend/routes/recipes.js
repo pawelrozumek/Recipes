@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let Recipe = require('../models/recipe.model');
 
-router.route('/').get((req, res) => {
+router.route('/recipes').get((req, res) => {
     Recipe.find()
         .then(recipes => res.json(recipes))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -27,13 +27,19 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').get((req, res) => {
+router.route('/recipes/:id').get((req, res) => {
     Recipe.findById(req.params.id)
         .then(recipe => res.json(recipe))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').delete((req, res) => {
+router.route('/edit/recipes/:id').get((req, res) => {
+    Recipe.findById(req.params.id)
+        .then(recipe => res.json(recipe))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/delete/recipes/:id').delete((req, res) => {
     Recipe.findByIdAndDelete(req.params.id)
         .then(() => res.json('Recipe deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
