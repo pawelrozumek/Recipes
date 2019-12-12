@@ -24,7 +24,8 @@ export default class EditRecipe extends Component {
             preparing: '',
             ingredients: [],
             index: 0,
-            ingredientsTable: []
+            ingredientsTable: [],
+            image: '',
         }
 
         axios.get(`http://localhost:5000/recipes/${this.props.match.params.id}`)
@@ -81,6 +82,12 @@ export default class EditRecipe extends Component {
         });
     }
 
+    onChangeImage(e) {
+        this.setState({
+            image: URL.createObjectURL(e.target.files[0])
+        });
+    }
+
     onDeleteRow(e) {
         let array = this.state.ingredients.slice();
         let table = this.state.ingredientsTable.slice();
@@ -94,7 +101,7 @@ export default class EditRecipe extends Component {
 
     onAddRow() {
         let length = this.state.ingredients.length;
-        if (length == this.state.index + 1) {
+        if (length === this.state.index + 1) {
             let array = this.state.ingredients.slice();
             array.push(['', '']);
             this.setState({

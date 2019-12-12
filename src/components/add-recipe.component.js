@@ -72,7 +72,6 @@ export default class AddRecipe extends Component {
         this.setState({
             image: URL.createObjectURL(e.target.files[0])
         });
-        console.log(e)
     }
 
     onDeleteRow(e) {
