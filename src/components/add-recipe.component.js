@@ -149,7 +149,7 @@ export default class AddRecipe extends Component {
                     <div className="col-md-7">
                         <div className="position-relative">
                             <img
-                                src={this.state.image}
+                                src={this.state.imag}
                                 alt=""
                                 className="img-fluid rounded mb-4"
                             />

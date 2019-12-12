@@ -160,7 +160,7 @@ export default class EditRecipe extends Component {
                     <div className="col-md-7">
                         <div className="position-relative">
                             <img
-                                src="./img/caesar-salad-10-1200.jpg"
+                                src={this.state.image}
                                 alt=""
                                 className="img-fluid rounded mb-4"
                             />
@@ -175,6 +175,17 @@ export default class EditRecipe extends Component {
                             </div>
                         </div>
 
+                        {/* Image select */}
+
+                        <label htmlFor="avatar">Choose a recipe picture:</label>
+                        <br />
+                        <input className="w-100" type="file"
+                            id="avatar" name="avatar"
+                            accept="image/png, image/jpeg" onChange={this.onChangeImage} />
+
+                        <br />
+                        <br />
+
                         {/* Recipe forms */}
 
                         <form className="form-inline">
@@ -184,11 +195,10 @@ export default class EditRecipe extends Component {
                                     type="number"
                                     step="1"
                                     min="1"
-                                    value="1"
                                     required={true}
                                     className="form-control mx-sm-3"
                                     id="cookingTime"
-                                    value={this.state.time}
+                                    defaultValue={this.state.time}
                                     onChange={this.onChangeTime}
                                 />
                             </div>
@@ -203,7 +213,7 @@ export default class EditRecipe extends Component {
                                     id="recipeName"
                                     placeholder="Enter recipe name here"
                                     maxLength="50"
-                                    value={this.state.name}
+                                    defaultValue={this.state.name}
                                     onChange={this.onChangeName}
                                 />
                                 <label htmlFor="description"> Description </label>
@@ -215,7 +225,7 @@ export default class EditRecipe extends Component {
                                     id="description"
                                     rows="10"
                                     placeholder="Type recipe description here. You can drag bottom left corner to adjust text area size!"
-                                    value={this.state.description}
+                                    defaultValue={this.state.description}
                                     onChange={this.onChangeDescription}
                                 />
                             </div>
@@ -253,7 +263,7 @@ export default class EditRecipe extends Component {
                                 rows="10"
                                 id="preparing"
                                 placeholder="Here you can tell us how to prepare dish. You can drag bottom left corner to adjust text area size!"
-                                value={this.state.preparing}
+                                defaultValue={this.state.preparing}
                                 onChange={this.onChangePreparing}
                             />
                         </form>
